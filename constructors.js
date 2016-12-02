@@ -11,6 +11,20 @@
  * @method   getDetails
  */
 
+ function Spell(name, cost, description){
+   this.name = name;
+   this.cost = cost;
+   this.description= description;
+
+   /*this.getDetails = function () { 
+      return " Spell " + name + " " + cost  + " " + description; 
+   }; */
+ }
+
+ Spell.prototype.getDetails = function() {
+    return this.name  + "will cost "  + this.cost  + " and do " + this.description;
+ }; 
+
   /**
    * Returns a string of all of the spell's details.
    * The format doesn't matter, as long as it contains the spell name, cost, and description.
@@ -19,6 +33,7 @@
    * @return {string} details containing all of the spells information.
    */
 
+  
 /**
  * A spell that deals damage.
  * We want to keep this code DRY (Don't Repeat Yourself).
@@ -44,6 +59,16 @@
  * @property {string} description
  */
 
+  function DamageSpell(name, cost, damage, description){
+   Spell.call(this, name, cost, description);
+   this.damage= damage;
+     
+   }
+
+   DamageSpell.prototype= Object.create(Spell.prototype);
+
+
+
 /**
  * Now that you've created some spells, let's create
  * `Spellcaster` objects that can use them!
@@ -61,6 +86,13 @@
  * @method  invoke
  */
 
+ function Spellcaster (name, health, mana){
+   Spell.call(this, name);
+   this.health= health;
+   this.mana= mana;
+   this.isAlive= true;
+ }
+
   /**
    * @method inflictDamage
    *
@@ -71,6 +103,15 @@
    *
    * @param  {number} damage  Amount of damage to deal to the spellcaster
    */
+
+   Spellcaster.prototype.inflictDamage = function (damage){
+      this.health -= damage;
+      if (this.health <= 0){
+         this.health = 0;
+         this.isAlive= false;
+      }
+
+   };
 
   /**
    * @method spendMana
